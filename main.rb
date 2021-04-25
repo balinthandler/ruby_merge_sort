@@ -1,16 +1,33 @@
-# frozen_string_literal: true
-
 def merge_sort(array)
   if array.length < 2
     array
   else
     first_half = array[0, array.length / 2]
     last_half = array[array.length / 2, array.length - 1]
-    merge_sort(first_half)
-    merge_sort(last_half)
+    left = merge_sort(first_half)
+    right = merge_sort(last_half)
+    merge(left, right)
   end
 end
 
-test = [3, 8, 5, 1, 4, 11, 2, 6, 7, 10, 9]
+def merge(left, right)
+  result = []
 
-merge_sort(test)
+  while !left.empty? && !right.empty?
+    if left[0] <= right[0]
+      result << left[0]
+      left.slice!(0)
+    else
+      result << right[0]
+      right.slice!(0)
+    end
+  end
+
+  result += left if right.empty?
+  result += right if left.empty?
+  result
+end
+
+test = [3, 8, 10, 1, 4, 2, 6, 5, 9, 7]
+
+p merge_sort(test)
